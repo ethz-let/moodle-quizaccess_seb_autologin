@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/quiz/accessrule/seb_autologin/db" VERSION="2024061700"
+    COMMENT="XMLDB file for Moodle mod/quiz/accessrule/seb_autologin"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd">
+  <TABLES>
+    <TABLE NAME="quizaccess_seb_autologin" COMMENT="Stores additional settings for SEB Server.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="quizid"/>
+        <FIELD NAME="sebautologinquizid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" COMMENT="Foreign key to quiz.id." PREVIOUS="id" NEXT="sebautologinenabled"/>
+        <FIELD NAME="sebautologinenabled" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" COMMENT="Boolean, if true, the seb_autologin usage is enabled." PREVIOUS="sebautloginquizid" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="quizid"/>
+        <KEY NAME="sebautologinquizid" TYPE="foreign-unique" FIELDS="sebautologinquizid" REFTABLE="quiz" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
