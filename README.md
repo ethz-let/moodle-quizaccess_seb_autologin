@@ -1,6 +1,6 @@
 #SEB Auto-Login Access rule.
 
-This accessrule plugin (/mod/quiz/accessrule) allows users to auto login to moodle when launching a quiz that is using SEB accessrule (with use client config, or manually created config options).
+This accessrule plugin (/mod/quiz/accessrule/seb_autologin) allows users to auto login to moodle when launching a quiz that is using SEB accessrule (with use client config, or manually created config options).
 
 The plugin also offers access to current logged in user info. This info is used by SEB Client.
 
