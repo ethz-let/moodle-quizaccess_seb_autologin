@@ -1,4 +1,4 @@
-# moodle-quizaccess_sebserver
+# moodle-quizaccess_seb_autologin
 ![](https://github.com/ethz-let/moodle-quizaccess_seb_autologin/actions/workflows/moodle-plugin-ci.yml/badge.svg)
 
 # SEB Auto-Login Access rule.
