@@ -50,14 +50,14 @@ class backup_quizaccess_seb_autologin_subplugin extends backup_mod_quiz_access_s
         // Create XML elements.
         $subplugin = $this->get_subplugin_element();
 
-        // Skip Mapping for SEB SERVER. See SEBSERV-400.
-        return $subplugin;
-
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subplugintablesettings = new backup_nested_element('quizaccess_seb_autologin',
                 null, ['sebautologinenabled']);
+        $subplugintablesettings = new backup_nested_element('quizaccess_seb_autologin',
+        null, ['sebautologinenabled']);
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
+        $subpluginwrapper->add_child($subplugintablesettings);
 
         // Set source to populate the data.
         $subplugintablesettings->set_source_table('quizaccess_seb_autologin',
