@@ -10,4 +10,4 @@
 # Required moodle version: 4.2+
 
 # Disclaimer:
-Every effort has been put into this plugin to work around SEB core plugin limited access scope and strucutre, hence, and due to the limited felxibility in SEB plugin code, the plugin is not written in the most efficient way, so please keep in your mind that the plugin might have an impace or negative effect on your setup.
+Every effort has been put into this plugin to work around SEB core plugin limited access scope and strucutre, hence, and due to the limited felxibility in SEB plugin code, the plugin is not written in the most efficient way. Please keep in your mind that the plugin might have an impact or a negative effect on your setup.
