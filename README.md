@@ -7,6 +7,15 @@
 
 * The plugin also offers access to current logged in user info. This info is used by SEB Client.
 
+# Restrictions
+* Autologin is NOT applicable to moodle admins. For obvious security reasons, admins will still need to re-login.
+* Token expires in 5 mins (moodle default is 60 seconds), in order to give the end user enough time to launch SEB.
+* Token is restircted to the current user IP address.
+* Webservices must be enabled. The only rationale here is to assume that site policy allows external services.
+* Moodle must be in https.
+* not guest, not suspended accounts etc
+* It validates (and terminates) concurrent sessions based on moodle max allowed concurrent logins settings.
+
 # Required moodle version: 4.2+
 
 # Disclaimer:
