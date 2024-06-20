@@ -16,7 +16,8 @@
 * not guest, not suspended accounts etc
 * It validates (and terminates) concurrent sessions based on moodle max allowed concurrent logins settings.
 
-# Required moodle version: 4.2+
+# Required moodle version:
+ Min required version 4.2
 
 # Disclaimer:
 Every effort has been put into this plugin to work around SEB core plugin limited access scope and strucutre, hence, and due to the limited felxibility in SEB plugin code, the plugin is not written in the most efficient way. Please keep in your mind that the plugin might have an impact or a negative effect on your setup.
