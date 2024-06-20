@@ -19,7 +19,7 @@
  *
  * @package   quizaccess_seb_autologin
  * @author    ETH Zurich (moodle@id.ethz.ch)
- * @copyright 2022 ETH Zurich
+ * @copyright 2024 ETH Zurich
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -64,7 +64,7 @@ class restore_quizaccess_seb_autologin_subplugin extends restore_mod_quiz_access
     public function process_quizaccess_seb_autologin($data) {
         global $DB;
         $data = (object)$data;
-        $data->seb_autologinquizid = $this->get_new_parentid('quiz');
+        $data->sebautologinquizid = $this->get_new_parentid('quiz');
         $DB->insert_record('quizaccess_seb_autologin', $data);
     }
 }
