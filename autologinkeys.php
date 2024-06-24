@@ -54,7 +54,7 @@ if (has_capability('moodle/site:config', context_system::instance(), $USER->id) 
 delete_user_key('quizaccess_seb_autologin', $USER->id);
 // Create a new key.
 $iprestriction = getremoteaddr();
-$validuntil = time() + 300; // Expires in 300 seconds.
+$validuntil = time() + 60; // Expires in 60 seconds.
 $key = create_user_key('quizaccess_seb_autologin', $USER->id, $id, $iprestriction, $validuntil);
 
 $fileurl = new moodle_url('/mod/quiz/accessrule/seb/config.php', ['cmid' => $id]);
