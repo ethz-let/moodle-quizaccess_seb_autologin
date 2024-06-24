@@ -55,9 +55,8 @@ if (has_capability('moodle/site:config', context_system::instance(), $userid) ||
     is_siteadmin($userid)) {
     throw new moodle_exception('autologinnotallowedtoadmins', 'tool_mobile');
 }
-// Validate and delete the key.
+// Validate the key.
 $key = validate_user_key($key, 'quizaccess_seb_autologin', $id);
-delete_user_key('quizaccess_seb_autologin', $userid);
 
 // Double check key belong to user.
 if ($key->userid != $userid) {
@@ -76,6 +75,8 @@ if (!$user = get_complete_user_data('id', $user->id)) {
 
 complete_user_login($user);
 \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
+// Delete the key.
+delete_user_key('quizaccess_seb_autologin', $userid);
 // 302 might not work for POST requests, 303 is ignored by obsolete clients.
 @header($_SERVER['SERVER_PROTOCOL'] . ' 303 See Other');
 @header('Location: '.$urltogo);
