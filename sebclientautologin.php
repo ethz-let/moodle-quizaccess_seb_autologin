@@ -75,8 +75,7 @@ if (!$user = get_complete_user_data('id', $user->id)) {
 
 complete_user_login($user);
 \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
-// Delete the key.
-delete_user_key('quizaccess_seb_autologin', $userid);
+// Leave the key to expire on its own due to headless call twice.
 // 302 might not work for POST requests, 303 is ignored by obsolete clients.
 @header($_SERVER['SERVER_PROTOCOL'] . ' 303 See Other');
 @header('Location: '.$urltogo);
