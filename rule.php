@@ -98,7 +98,7 @@ class quizaccess_seb_autologin extends access_rule_base {
             $validuntil = time() + 900; // Expires in 15 mins.
             $key = create_user_key('quizaccess_seb_autologin', $USER->id, $cmid, $iprestriction, $validuntil);
             $params = ['id' => $cmid, 'userid' => $USER->id, 'key' => $key, 'urltogo' => $seblink];
-            $autologinurl = new moodle_url('/mod/quiz/accessrule/sebserver/sebclientautologin.php?',
+            $autologinurl = new moodle_url('/mod/quiz/accessrule/seb_autologin/sebclientautologin.php?',
                                         $params);
             is_https() ? $autologinurl->set_scheme('sebs') : $autologinurl->set_scheme('seb');
             $return .= '
