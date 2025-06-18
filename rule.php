@@ -97,7 +97,8 @@ class quizaccess_seb_autologin extends access_rule_base {
             $iprestriction = getremoteaddr();
             $validuntil = time() + 900; // Expires in 15 mins.
             $key = create_user_key('quizaccess_seb_autologin', $USER->id, $cmid, $iprestriction, $validuntil);
-            $params = ['id' => $cmid, 'userid' => $USER->id, 'key' => $key, 'urltogo' => $seblink];
+            $seblinkhttps = new moodle_url('/mod/quiz/accessrule/seb/config.php', ['cmid' => $cmid]);
+            $params = ['id' => $cmid, 'userid' => $USER->id, 'key' => $key, 'urltogo' => $seblinkhttps];
             $autologinurl = new moodle_url('/mod/quiz/accessrule/seb_autologin/sebclientautologin.php?',
                                         $params);
             is_https() ? $autologinurl->set_scheme('sebs') : $autologinurl->set_scheme('seb');
@@ -108,7 +109,6 @@ class quizaccess_seb_autologin extends access_rule_base {
                         for (var i = 0, l = els.length; i < l; i++) {
                             var el = els[i];
                             el.setAttribute("href", "'. $autologinurl->out(false) . '");
-                            el.addEventListener("click", function() { this.setAttribute("disabled", true); });
                         }
                     };
                     </script>
