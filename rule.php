@@ -91,15 +91,24 @@ class quizaccess_seb_autologin extends access_rule_base {
         // Autologin area (only non admins).
         if (!has_capability('moodle/site:config', context_system::instance(), $USER->id) &&
             !is_siteadmin($USER->id)) {
-            $autologinlink = new moodle_url('/mod/quiz/accessrule/seb_autologin/autologinkeys.php?',
-                                    ['id' => $cmid, 'sesskey' => sesskey()]);
+            // Delete previous keys.
+            delete_user_key('quizaccess_seb_autologin', $USER->id);
+            // Create a new key.
+            $iprestriction = getremoteaddr();
+            $validuntil = time() + 900; // Expires in 15 mins.
+            $key = create_user_key('quizaccess_seb_autologin', $USER->id, $cmid, $iprestriction, $validuntil);
+            $params = ['id' => $cmid, 'userid' => $USER->id, 'key' => $key, 'urltogo' => $seblink];
+            $autologinurl = new moodle_url('/mod/quiz/accessrule/sebserver/sebclientautologin.php?',
+                                        $params);
+            is_https() ? $autologinurl->set_scheme('sebs') : $autologinurl->set_scheme('seb');
             $return .= '
                     <script type="text/javascript" charset="utf-8">
                     window.onload = function(event) {
                         var els = document.querySelectorAll("a[href=\'' . $seblink->out() . '\']");
                         for (var i = 0, l = els.length; i < l; i++) {
                             var el = els[i];
-                            el.setAttribute("href", "'. $autologinlink->out(false) . '");
+                            el.setAttribute("href", "'. $autologinurl->out(false) . '");
+                            el.addEventListener("click", function() { this.setAttribute("disabled", true); });
                         }
                     };
                     </script>
