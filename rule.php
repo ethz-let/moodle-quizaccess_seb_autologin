@@ -27,6 +27,7 @@ use mod_quiz\local\access_rule_base;
 use mod_quiz\quiz_attempt;
 use mod_quiz\quiz_settings;
 use quizaccess_seb\seb_access_manager;
+use quizaccess_seb\settings_provider;
 
 /**
  * A rule requiring SEB Server connection.
@@ -35,6 +36,13 @@ use quizaccess_seb\seb_access_manager;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class quizaccess_seb_autologin extends access_rule_base {
+
+    /** @var int[] SEB modes in which SEB downloads its config from Moodle (config.php), so autologin applies. */
+    private const SEB_MODES_WITH_CONFIG_DOWNLOAD = [
+        settings_provider::USE_SEB_CONFIG_MANUALLY,
+        settings_provider::USE_SEB_TEMPLATE,
+        settings_provider::USE_SEB_UPLOAD_CONFIG,
+    ];
 
     /**
      * Return an appropriately configured instance of this rule, if it is applicable
@@ -47,8 +55,13 @@ class quizaccess_seb_autologin extends access_rule_base {
      * @return access_rule_base|null the rule, if applicable, else null.
      */
     public static function make(quiz_settings $quizobj, $timenow, $canignoretimelimits) {
-
-        if (empty($quizobj->get_quiz()->sebautologinenabled)) {
+        $quiz = $quizobj->get_quiz();
+        if (empty($quiz->sebautologinenabled)) {
+            return null;
+        }
+        // The setting is kept when SEB is switched off, so check the SEB mode as well.
+        $sebmode = (int) ($quiz->seb_requiresafeexambrowser ?? settings_provider::USE_SEB_NO);
+        if (!in_array($sebmode, self::SEB_MODES_WITH_CONFIG_DOWNLOAD, true)) {
             return null;
         }
         return new self($quizobj, $timenow);
@@ -67,7 +80,8 @@ class quizaccess_seb_autologin extends access_rule_base {
         $mform->addElement('header', 'seb_autologinheader', get_string('pluginname', 'quizaccess_seb_autologin'));
         $mform->addElement('selectyesno', 'sebautologinenabled', get_string('enableseb_autologin', 'quizaccess_seb_autologin'));
         $mform->setType('sebautologinenabled', PARAM_INT);
-        $mform->disabledif ('sebautologinenabled', 'seb_requiresafeexambrowser', 'in', [0, 2, 4]);
+        $mform->setDefault('sebautologinenabled', self::get_default_enabled());
+        $mform->disabledif ('sebautologinenabled', 'seb_requiresafeexambrowser', 'in', [0, 4]);
 
     }
 
@@ -125,10 +139,12 @@ class quizaccess_seb_autologin extends access_rule_base {
      */
     public static function save_settings($quiz) {
         global $DB;
-        if (!isset($quiz->sebautologinenabled)) {
-            $quiz->sebautologinenabled = 0;
-        }
         $rec = $DB->get_record('quizaccess_seb_autologin', ['sebautologinquizid' => $quiz->id]);
+        if (!isset($quiz->sebautologinenabled)) {
+            // Not submitted: the form field is disabled for the current SEB mode, or the quiz
+            // was saved without the form. Keep the stored value; new quizzes get the site default.
+            $quiz->sebautologinenabled = $rec ? $rec->sebautologinenabled : self::get_default_enabled();
+        }
         if (!$rec) {
             $record = new stdClass();
             $record->sebautologinquizid = $quiz->id;
@@ -137,10 +153,18 @@ class quizaccess_seb_autologin extends access_rule_base {
         } else {
             $record = new stdClass();
             $record->id = $rec->id;
-            $record->autologinquizid = $quiz->id;
             $record->sebautologinenabled = $quiz->sebautologinenabled;
             $DB->update_record('quizaccess_seb_autologin', $record);
         }
+    }
+
+    /**
+     * Site default for "Enable auto login" in new quizzes.
+     *
+     * @return int 1 if enabled by default, otherwise 0.
+     */
+    private static function get_default_enabled(): int {
+        return (int) get_config('quizaccess_seb_autologin', 'defaultenabled');
     }
 
     /**

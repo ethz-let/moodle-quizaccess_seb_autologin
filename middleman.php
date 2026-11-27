@@ -38,6 +38,7 @@ if (isguestuser()) {
 
 $context = context_system::instance();
 $PAGE->set_context($context);
+$PAGE->set_url(new moodle_url('/mod/quiz/accessrule/seb_autologin/middleman.php', ['cnfg' => $urltogo]));
 $PAGE->set_pagelayout('redirect');  // No header and footer needed.
 $PAGE->set_title(get_string('pageshouldredirect', 'moodle'));
 

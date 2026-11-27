@@ -27,4 +27,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'SEB Auto-Login';
+$string['defaultenabled'] = 'Auto-Login standardmäßig aktivieren';
+$string['defaultenabled_desc'] = 'Vorgabewert der Einstellung „Enable auto login“ für neue Tests. Auto-Login wirkt nur, wenn der Test den Safe Exam Browser erfordert und SEB seine Konfiguration von Moodle lädt (manuelle Konfiguration, Vorlage oder hochgeladene Konfiguration).';
 $string['enableseb_autologin'] = 'Enable auto login';
